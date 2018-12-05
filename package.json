@@ -1,0 +1,29 @@
+{
+  "name": "hologqlcontainer",
+  "version": "0.0.1",
+  "description": "A Holochain Container with GraphQL features",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index",
+    "dev": "nodemon index.js",
+    "hc-package": "cd hApp/hApp1/ && hc package -o dist/bundle.json && cd ../..",
+    "hc-test": "cd hApp/hApp1/ && hc test | tap-spec && cd ../.."
+  },
+  "keywords": [
+    "holochain",
+    "graphql"
+  ],
+  "author": "Ricardo Zylbergeld <ricardo@digitao.com.br> (http://www.digitao.com.br/)",
+  "license": "ISC",
+  "dependencies": {
+    "@holochain/holochain-nodejs": "^0.2.0",
+    "apollo-server-express": "^2.2.5",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.7",
+    "tap-spec": "^5.0.0",
+    "tape": "^4.9.1"
+  }
+}
