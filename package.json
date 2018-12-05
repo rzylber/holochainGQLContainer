@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index.js",
-    "hc-package": "cd hApp/hApp1/ && hc package -o dist/bundle.json && cd ../..",
-    "hc-test": "cd hApp/hApp1/ && hc test | tap-spec && cd ../.."
+    "hc-package": "npm run hc-package-happ1 && npm run hc-package-happ2",
+    "hc-package-happ1": "cd hApp/hApp1/ && hc package -o dist/bundle.json && cd ../..",
+    "hc-package-happ2": "cd hApp/hApp2/ && hc package -o dist/bundle.json && cd ../.."
   },
   "keywords": [
     "holochain",
