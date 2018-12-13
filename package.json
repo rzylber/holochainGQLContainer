@@ -4,8 +4,8 @@
   "description": "A Holochain Container with GraphQL features",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "nodemon index.js",
+    "start": "node examples/index",
+    "dev": "nodemon examples/index.js",
     "hc-package": "npm run hc-package-movies && npm run hc-package-happ2",
     "hc-package-movies": "cd examples/hApps/movies/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../../..",
     "hc-package-happ2": "cd examples/hApps/hApp2/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../.."
@@ -23,8 +23,12 @@
     "graphql": "^14.0.2"
   },
   "devDependencies": {
-    "nodemon": "^1.18.7",
+    "nodemon": "^1.18.8",
     "tap-spec": "^5.0.0",
     "tape": "^4.9.1"
-  }
+  },
+  "files": [
+    "README.md",
+    "index.js"
+  ]
 }
