@@ -2,6 +2,6 @@
     "port": 4141,
     "happs": {
         "movies": "./examples/hApps/movies/dist/bundle.json",
-        "hApp2": "./hApp/hApp2/dist/bundle.json"
+        "hApp2": "./examples/hApps/hApp2/dist/bundle.json"
     }
 }

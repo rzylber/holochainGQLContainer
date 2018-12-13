@@ -8,7 +8,7 @@
     "dev": "nodemon index.js",
     "hc-package": "npm run hc-package-movies && npm run hc-package-happ2",
     "hc-package-movies": "cd examples/hApps/movies/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../../..",
-    "hc-package-happ2": "cd hApp/hApp2/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../.."
+    "hc-package-happ2": "cd examples/hApps/hApp2/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../.."
   },
   "keywords": [
     "holochain",
