@@ -20,5 +20,5 @@ module.exports = async ( schema, setup ) => {
   // TODO: test agent (any persistence?)
   
   await app.listen({ port: setup.port || 4400 });
-  return { app, server };
+  return { app, server, hApps };
 }
