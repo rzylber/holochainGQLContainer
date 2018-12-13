@@ -9,7 +9,7 @@ module.exports = ( hApps ) => {
       getMovies: [Movie]
       getPerson( address: String! ): Person
       getMovie( address: String! ): Movie
-      showGreeting( name: String ): String
+      showGreeting( name: String! ): String
     }
     type Mutation {
       addPerson( name: String!, gender: String!, place_birth: String! ): String
