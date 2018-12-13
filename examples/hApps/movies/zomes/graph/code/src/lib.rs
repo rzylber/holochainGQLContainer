@@ -32,6 +32,7 @@ use hdk::{
 
 #[derive(Serialize, Deserialize, Debug, Clone, DefaultJson)]
 pub struct Person {
+    pub address: Option<HashString>,
     pub name: String,
     pub gender: String,
     pub place_birth: String,
@@ -40,6 +41,7 @@ pub struct Person {
 
 #[derive(Serialize, Deserialize, Debug, Clone, DefaultJson)]
 pub struct Movie {
+    pub address: Option<HashString>,
     pub name: String,
     pub year: String,
     pub language: String,
@@ -174,6 +176,7 @@ fn handle_create_person (
     place_birth: String,
 ) -> JsonString {
     let person = Person {
+        address: None,
         name,
         gender,
         place_birth,
@@ -196,6 +199,7 @@ fn handle_create_movie (
     language: String,
 ) -> JsonString {
     let movie = Movie {
+        address: None,
         name,
         year,
         language,
@@ -220,7 +224,7 @@ fn handle_get_people() -> JsonString {
 
             for address in result.addresses().iter() {
                 let result = hdk::get_entry( address.to_owned() ).unwrap(); // TODO: possible panic here!
-                people.push( Person::try_from(result.expect("Person not found!").value()).unwrap() );
+                people.push( build_person( address.to_owned(), result.expect("Person not found!").value().to_owned() ) );
             }            
 
             people.into()
@@ -237,7 +241,7 @@ fn handle_get_movies() -> JsonString {
 
             for address in result.addresses().iter() {
                 let result = hdk::get_entry( address.to_owned() ).unwrap(); // TODO: possible panic here!
-                movies.push( Movie::try_from(result.expect("Movie not found!").value()).unwrap() );
+                movies.push( build_movie( address.to_owned(), result.expect("Movie not found!").value().to_owned() ) );
             }            
 
             movies.into()
@@ -254,7 +258,7 @@ fn handle_get_movies_by_actor( actor_address: HashString ) -> JsonString {
 
             for address in result.addresses().iter() {
                 let result = hdk::get_entry( address.to_owned() ).unwrap(); // TODO: possible panic here!
-                movies.push( Movie::try_from(result.expect("Movie not found!").value()).unwrap() );
+                movies.push( build_movie( address.to_owned(), result.expect("Movie not found!").value().to_owned() ) );
             }            
 
             movies.into()
@@ -271,7 +275,7 @@ fn handle_get_actors_by_movie( movie_address: HashString ) -> JsonString {
 
             for address in result.addresses().iter() {
                 let result = hdk::get_entry( address.to_owned() ).unwrap(); // TODO: possible panic here!
-                people.push( Person::try_from(result.expect("Person not found!").value()).unwrap() );
+                people.push( build_person( address.to_owned(), result.expect("Person not found!").value().to_owned() ) );
             }            
 
             people.into()
@@ -288,7 +292,7 @@ fn handle_get_movies_by_director( director_address: HashString ) -> JsonString {
 
             for address in result.addresses().iter() {
                 let result = hdk::get_entry( address.to_owned() ).unwrap(); // TODO: possible panic here!
-                movies.push( Movie::try_from(result.expect("Movie not found!").value()).unwrap() );
+                movies.push( build_movie( address.to_owned(), result.expect("Movie not found!").value().to_owned() ) );
             }            
 
             movies.into()
@@ -305,7 +309,7 @@ fn handle_get_director_by_movie( movie_address: HashString ) -> JsonString { // 
 
             for address in result.addresses().iter() {
                 let result = hdk::get_entry( address.to_owned() ).unwrap(); // TODO: possible panic here!
-                people.push( Person::try_from(result.expect("Person not found!").value()).unwrap() );
+                people.push( build_person( address.to_owned(), result.expect("Person not found!").value().to_owned() ) );
             }            
 
             people.into()
@@ -348,16 +352,16 @@ fn handle_add_director ( // TODO: only one - cardinality?
     }
 }
 
-fn handle_get_person(address: HashString) -> JsonString {
-    match hdk::get_entry(address) {
-        Ok(result) => Person::try_from(result.expect("Person not found!").value()).unwrap().into(),
+fn handle_get_person(address: HashString) -> JsonString { // TODO: remove to_owner - understand OWNERSHIP!!
+    match hdk::get_entry(address.to_owned()) {
+        Ok(result) => build_person( address.to_owned(), result.expect("Person not found!").value().to_owned() ).into(),
         Err(hdk_error) => hdk_error.into(),
     }
 }
 
-fn handle_get_movie(address: HashString) -> JsonString {
-    match hdk::get_entry(address) {
-        Ok(result) => Movie::try_from(result.expect("Movie not found!").value()).unwrap().into(),
+fn handle_get_movie(address: HashString) -> JsonString { // TODO: remove to_owner - understand OWNERSHIP!!
+    match hdk::get_entry(address.to_owned()) {
+        Ok(result) => build_movie( address.to_owned(), result.expect("Movie not found!").value().to_owned() ).into(),
         Err(hdk_error) => hdk_error.into(),
     }
 }
@@ -375,6 +379,21 @@ fn handle_add_actor (
     }
 }
 */
+
+// Support functions
+
+fn build_person( address: HashString, json_entity: JsonString ) -> Person {
+    let mut person = Person::try_from( json_entity ).unwrap();
+    person.address = Some(address);
+    person
+}
+fn build_movie( address: HashString, json_entity: JsonString ) -> Movie {
+    let mut movie = Movie::try_from( json_entity ).unwrap();
+    movie.address = Some(address);
+    movie
+}
+
+// ZOME DEFINITION
 
 define_zome! {
     entries: [

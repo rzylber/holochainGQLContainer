@@ -14,14 +14,14 @@ const person1 = {
   gender: "male",
   place_birth: "Chicago, Illinois, USA"
 }
-const person1Address = "QmanjpYN3ypTPK7mGE7NWN7EQ7jpjg7FyqJve3r8Rwsxdf";
+const person1Address = "QmcMWCXtxzM2TCkom2dqZHPz61njgsyUKM7CNMbVjC8TZr";
 
 const person2 = {
   name: "Ridley Scott ",
   gender: "male",
   place_birth: "South Shields, County Durham, England, UK"
 }
-const person2Address = "QmeJxuwd8VsVPo8couVGjDCnheYH35hN4wZHSBdLwoh5KG";
+const person2Address = "QmPqhLUFLRChB3kus9ya1HtASXs9vvVq8739vTpqAX99wh";
 
 const movie = {
   name: "Blade Runner",
@@ -29,7 +29,7 @@ const movie = {
   language: "English"
 }
 
-const movieAddress = "Qmct92JbX7DhUNdbjPDSJs918iwkL1YeG6cjJDzkP2b1zT";
+const movieAddress = "QmUhEPoeRiC6KFc5wDHPymisyMdcoGv7vSBYsmdpqB9qBk";
 
 test('create person 1', (t) => {
   const result = app.call("graph", "main", "create_person", person1)
