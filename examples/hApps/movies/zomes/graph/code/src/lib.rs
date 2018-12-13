@@ -348,6 +348,20 @@ fn handle_add_director ( // TODO: only one - cardinality?
     }
 }
 
+fn handle_get_person(address: HashString) -> JsonString {
+    match hdk::get_entry(address) {
+        Ok(result) => Person::try_from(result.expect("Person not found!").value()).unwrap().into(),
+        Err(hdk_error) => hdk_error.into(),
+    }
+}
+
+fn handle_get_movie(address: HashString) -> JsonString {
+    match hdk::get_entry(address) {
+        Ok(result) => Movie::try_from(result.expect("Movie not found!").value()).unwrap().into(),
+        Err(hdk_error) => hdk_error.into(),
+    }
+}
+
 /*
 fn handle_add_actor (
     actor_address: HashString,
@@ -391,6 +405,16 @@ define_zome! {
                 inputs: | |,
                 outputs: |result: JsonString|,
                 handler: handle_get_movies
+            }
+            get_person: {
+                inputs: | person_address: HashString  |,
+                outputs: |result: JsonString|,
+                handler: handle_get_person
+            }
+            get_movie: {
+                inputs: | movie_address: HashString  |,
+                outputs: |result: JsonString|,
+                handler: handle_get_movie
             }
             get_movies_by_actor: {
                 inputs: | actor_address: HashString  |,

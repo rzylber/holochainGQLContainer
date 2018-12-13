@@ -37,9 +37,21 @@ test('create person 1', (t) => {
   t.end()
 })
 
+test('get person 1', (t) => {
+  const result = app.call("graph", "main", "get_person", { person_address: person1Address })
+  t.equal(result.name, person1.name)
+  t.end()
+})
+
 test('create movie', (t) => {
   const result = app.call("graph", "main", "create_movie", movie)
   t.equal(result.address, movieAddress)
+  t.end()
+})
+
+test('get movie', (t) => {
+  const result = app.call("graph", "main", "get_movie", {movie_address: movieAddress })
+  t.equal(result.name, movie.name)
   t.end()
 })
 
