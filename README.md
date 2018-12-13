@@ -3,12 +3,99 @@
 
 # Overview
 
+> Point to any hApp (bundle) you've created and build schemas (typeDefs and resolvers) over their zome functions.
+
+**Note**: 
 This project is a simple application for learning purposes.
 This application implements a graphql layer over a node.js holochain container.
 
-**Caution:** Holochain is in Alpha 2 version.
 
 # Installation & Usage
+If you want to jump to the examples, [*see the sample application*](#sample-application) below
+
+1. First, install all the dependencies:
+``` shell
+  npm i -S git+https://git@github.com/rzylber/holochainGQLContainer.git apollo-server-express graphql
+```
+
+2. Create a `setup.json` file pointing to the hApps you want to instantiate:
+
+``` javascript
+{
+    "port": 4141, // http and graphQL server port
+    "happs": { // hApps to instantiate as "user": "hApp bundle path"
+        "movies": "./hApps/movies/dist/bundle.json",
+        "hApp2": "./hApps/hApp2/dist/bundle.json"
+    }
+}
+```
+
+3. Create a `schema.js` file with graphQL typeDefs and resolvers. See an example:
+
+``` javascript
+const { gql } = require('apollo-server-express');
+
+module.exports = ( hApps ) => {
+  
+  // Type definitions
+  const typeDefs = gql`
+    type Query {
+      getPeople: [Person]
+      getPerson( address: String! ): Person
+    }
+    type Mutation {
+      addPerson( name: String!, gender: String!, place_birth: String! ): String
+    }
+    type Person {
+      address: String,
+      name: String
+      gender: String
+      place_birth: String
+    }
+  `;
+
+  // Resolvers
+  const resolvers = {
+    Query: {
+      getPeople: () => {
+        return hApps['movies'].call("graph", "main", "get_people", {})
+      },
+      getPerson: (_, { address }) => {
+        return hApps['movies'].call("graph", "main", "get_person", { person_address: address })
+      },      
+    },
+    Mutation: {
+      addPerson: (_, { name, gender, place_birth }) => {
+        return hApps['movies'].call("graph", "main", "create_person", { name, gender, place_birth }).address 
+      }
+    }
+  };
+
+  return { typeDefs, resolvers }
+}
+```
+
+4. Create your `index.js` following the example below:
+
+``` javascript
+const holoGQLContainer = require('holoGQLContainer')
+
+const schema = require('./schema');
+const setup = require('./setup.json');
+
+(async ()=>{
+    const { server, hApps } = await holoGQLContainer( schema, setup )
+
+    console.log(`🚀 Server ready at http://localhost:${setup.port}${server.graphqlPath}`)
+})()
+```
+5. Run your application: `node index`
+
+6. Open the browser at this url: http://localhost:4141/graphql
+
+See some [*GraphQL query samples*](#graphQL-query-samples) below
+
+# Sample application
 
 * **Note 1**: You'll need to [install Node JS (10 or above)][install-node]
 
@@ -16,7 +103,7 @@ This application implements a graphql layer over a node.js holochain container.
 
 1. Clone this repo and access the project folder:
 ```shell
-    git clone https://github.com/rzylber/holochainGQLContainerTest.git && cd holochainGQLContainerTest
+    git clone https://github.com/rzylber/holochainGQLContainer.git && cd holochainGQLContainer
 ```
 
 2. Install the dependencies
@@ -38,7 +125,9 @@ npm start
 
 5. Open the browser at this url: http://localhost:4141/graphql
 
-6. In the graphql playground, try out some queries and mutations (some sandbox data was inserted for testing purpuse - examples below)
+# GraphQL Query Samples
+
+In the graphql playground, try out some queries and mutations (some sandbox data was inserted for testing purpuse - examples below)
 ```graphql
 query getMovies {
   getMovies {
@@ -55,32 +144,4 @@ query getMovies {
     }
   }
 }
-```
-
-# Custom hApps and GraphQL schemas
-
-You can point any hApp (bundle) you've created and create any new schema (typeDefs and resolvers), changing the following files:
-
-1. Edit `setup.json` and point to the hApps you want to instantiate:
-
-``` javascript
-{
-    "port": 4141, // http and graphQL server port
-    "happs": { // hApps to instantiate as "user": "hApp bundle path"
-        "movies": "./examples/hApps/movies/dist/bundle.json",
-        "hApp2": "./hApp/hApp2/dist/bundle.json"
-    }
-}
-```
-
-2. Edit `schema.js` following its patterns to create graphQL typeDefs and resolvers.
-
-3. And then, you can start the server and access the playground with the following command:
-``` shell
-npm start
-```
-alternatively you can run the command below for development (nodemon):
-
-``` shell
-npm run dev
 ```
