@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index.js",
-    "hc-package": "npm run hc-package-happ1 && npm run hc-package-happ2",
-    "hc-package-happ1": "cd hApp/hApp1/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../..",
+    "hc-package": "npm run hc-package-movies && npm run hc-package-happ2",
+    "hc-package-movies": "cd examples/hApps/movies/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../../..",
     "hc-package-happ2": "cd hApp/hApp2/ && mkdir -p dist && hc package -o dist/bundle.json && cd ../.."
   },
   "keywords": [

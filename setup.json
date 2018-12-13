@@ -1,7 +1,7 @@
 {
     "port": 4141,
     "happs": {
-        "hApp1": "./hApp/hApp1/dist/bundle.json",
+        "movies": "./examples/hApps/movies/dist/bundle.json",
         "hApp2": "./hApp/hApp2/dist/bundle.json"
     }
 }

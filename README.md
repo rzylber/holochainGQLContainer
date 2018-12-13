@@ -81,7 +81,7 @@ You can point any hApp (bundle) you've created and create any new schema (typeDe
 {
     "port": 4141, // http and graphQL server port
     "happs": { // hApps to instantiate as "user": "hApp bundle path"
-        "hApp1": "./hApp/hApp1/dist/bundle.json",
+        "movies": "./examples/hApps/movies/dist/bundle.json",
         "hApp2": "./hApp/hApp2/dist/bundle.json"
     }
 }
