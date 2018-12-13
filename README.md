@@ -13,6 +13,10 @@ This application implements a graphql layer over a node.js holochain container.
 # Installation & Usage
 If you want to jump to the examples, [*see the sample application*](#sample-application) below
 
+* **Note 1**: You'll need to [install Node JS (10 or above)][install-node]
+
+* **Note 2**: You'll need to [Install the Holochain command line dev tool][install-holochain]
+
 1. First, install all the dependencies:
 ``` shell
   npm i -S git+https://git@github.com/rzylber/holochainGQLContainer.git apollo-server-express graphql
@@ -22,8 +26,8 @@ If you want to jump to the examples, [*see the sample application*](#sample-appl
 
 ``` javascript
 {
-    "port": 4141, // http and graphQL server port
-    "happs": { // hApps to instantiate as "user": "hApp bundle path"
+    "port": 4141,
+    "happs": {
         "movies": "./hApps/movies/dist/bundle.json",
         "hApp2": "./hApps/hApp2/dist/bundle.json"
     }
@@ -78,7 +82,7 @@ module.exports = ( hApps ) => {
 4. Create your `index.js` following the example below:
 
 ``` javascript
-const holoGQLContainer = require('holoGQLContainer')
+const holoGQLContainer = require('hologqlcontainer')
 
 const schema = require('./schema');
 const setup = require('./setup.json');
